@@ -1,0 +1,408 @@
+/* ═══════════════════════════════════════════
+   ПЛАНАРНЫЕ ЭНКАУНТЕРЫ — style.css
+   ═══════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --fire:           #C04828;
+  --earth:          #3B6D11;
+  --air:            #185FA5;
+  --water:          #0F6E56;
+  --shadow:         #534AB7;
+  --gold:           #B8972A;
+  --gold-light:     #E8C94A;
+  --parchment:      #F0E8D0;
+  --parchment-dark: #D4C49A;
+  --ink:            #1A1008;
+  --ink-soft:       #3A2A18;
+  --bg:             #0D0A06;
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, #1a1208 0%, transparent 60%),
+    repeating-linear-gradient(0deg,  transparent, transparent 40px, rgba(184,151,42,0.015) 40px, rgba(184,151,42,0.015) 41px),
+    repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(184,151,42,0.015) 40px, rgba(184,151,42,0.015) 41px);
+  min-height: 100vh;
+  font-family: 'EB Garamond', Georgia, serif;
+  color: var(--parchment);
+  padding: 60px 20px 80px;
+}
+
+/* ── HEADER ── */
+header {
+  text-align: center;
+  margin-bottom: 70px;
+}
+.header-inner {
+  display: inline-block;
+  position: relative;
+  padding: 28px 0;
+}
+.header-inner::before,
+.header-inner::after {
+  content: '';
+  display: block;
+  width: 340px;
+  max-width: 90vw;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto;
+}
+.header-inner::before { margin-bottom: 28px; }
+.header-inner::after  { margin-top:    28px; }
+
+.header-rune {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  opacity: 0.7;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(26px, 5vw, 52px);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--gold-light);
+  text-shadow: 0 0 40px rgba(184,151,42,0.35), 0 2px 0 rgba(0,0,0,0.8);
+  line-height: 1.1;
+}
+.header-sub {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--parchment-dark);
+  opacity: 0.7;
+  margin-top: 10px;
+  letter-spacing: 0.05em;
+}
+
+/* ── GRID ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 540px), 1fr));
+  gap: 36px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.card-epic-wrap {
+  grid-column: 1 / -1;
+}
+
+/* ── CARD BASE ── */
+.enc-card {
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--bg);
+  opacity: 0;
+  transform: translateY(28px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.enc-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.enc-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(184,151,42,0.08);
+}
+
+/* outer gold border */
+.enc-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(184,151,42,0.4);
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 10;
+  transition: border-color 0.3s ease;
+}
+/* inner border */
+.enc-card::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(184,151,42,0.15);
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 10;
+}
+.enc-card:hover::before {
+  border-color: rgba(184,151,42,0.7);
+}
+
+/* ── PLANE-SPECIFIC HOVER GLOWS ── */
+.enc-card[data-plane="fire"]:hover   { box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(192,72,40,0.15); }
+.enc-card[data-plane="earth"]:hover  { box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(59,109,17,0.15); }
+.enc-card[data-plane="air"]:hover    { box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(24,95,165,0.15); }
+.enc-card[data-plane="water"]:hover  { box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(15,110,86,0.15); }
+.enc-card[data-plane="shadow"]:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(83,74,183,0.2); }
+
+/* ── ILLUSTRATION ── */
+.card-art {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+}
+.card-art-epic {
+  height: 280px;
+}
+.card-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.enc-card:hover .card-art img {
+  transform: scale(1.04);
+}
+.card-art-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 35%, var(--bg) 100%);
+  pointer-events: none;
+}
+
+/* ── PLANE BADGE ── */
+.plane-badge {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 3px 16px 2px;
+  border: 1px solid;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.badge-fire   { color: #FF9060; border-color: rgba(192,72,40,0.6);  background: rgba(13,5,0,0.75); }
+.badge-earth  { color: #A0E060; border-color: rgba(59,109,17,0.6);  background: rgba(3,8,1,0.75); }
+.badge-air    { color: #80C8FF; border-color: rgba(24,95,165,0.6);  background: rgba(2,6,13,0.75); }
+.badge-water  { color: #40E8C0; border-color: rgba(15,110,86,0.6);  background: rgba(1,5,3,0.75); }
+.badge-shadow { color: #C080FF; border-color: rgba(83,74,183,0.6);  background: rgba(3,1,8,0.75); }
+
+/* ── CORNER GEMS ── */
+.gem {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  z-index: 12;
+}
+.gem-tl { top: 10px;    left: 10px; }
+.gem-tr { top: 10px;    right: 10px; }
+.gem-bl { bottom: 10px; left: 10px; }
+.gem-br { bottom: 10px; right: 10px; }
+
+.fire-gem   { background: radial-gradient(circle at 35% 35%, #FF8060, #8B1A00); box-shadow: 0 0 8px rgba(192,72,40,0.8); }
+.earth-gem  { background: radial-gradient(circle at 35% 35%, #80E040, #1A5008); box-shadow: 0 0 8px rgba(59,109,17,0.8); }
+.air-gem    { background: radial-gradient(circle at 35% 35%, #80C8FF, #0A3060); box-shadow: 0 0 8px rgba(24,95,165,0.8); }
+.water-gem  { background: radial-gradient(circle at 35% 35%, #40E8C0, #044030); box-shadow: 0 0 8px rgba(15,110,86,0.8); }
+.shadow-gem { background: radial-gradient(circle at 35% 35%, #C080FF, #2A1060); box-shadow: 0 0 8px rgba(83,74,183,0.8); }
+
+/* ── PARCHMENT BODY ── */
+.card-body {
+  position: relative;
+  padding: 24px 28px 28px;
+  background: linear-gradient(170deg, #F5DEBA 0%, #EDD8A8 30%, #E8D298 60%, #F0DDB8 100%);
+  color: var(--ink);
+}
+.card-body::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+  opacity: 0.5;
+  margin-bottom: 20px;
+}
+
+/* ── CARD TYPOGRAPHY ── */
+.card-title {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.card-title-epic {
+  font-size: 22px;
+}
+.card-type {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-align: center;
+  opacity: 0.7;
+  margin-bottom: 16px;
+  letter-spacing: 0.04em;
+}
+.divider-ornament {
+  text-align: center;
+  color: var(--gold);
+  font-size: 14px;
+  letter-spacing: 0.3em;
+  opacity: 0.6;
+  margin: 12px 0;
+  user-select: none;
+}
+.card-flavor {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  text-align: center;
+  line-height: 1.5;
+  margin-bottom: 14px;
+  opacity: 0.85;
+}
+.rule-block {
+  margin-bottom: 10px;
+}
+.rule-label {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  opacity: 0.55;
+  margin-bottom: 3px;
+}
+.rule-text {
+  font-family: 'EB Garamond', serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.rule-text strong {
+  font-weight: 600;
+  color: #1A0808;
+}
+
+/* ── OUTCOMES ── */
+.outcome {
+  display: flex;
+  gap: 8px;
+  margin: 5px 0;
+  align-items: baseline;
+}
+.outcome-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  padding: 2px 7px 1px;
+  border-radius: 1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border: 1px solid;
+}
+.tag-success { color: #1A4008; border-color: rgba(59,109,17,0.5);  background: rgba(59,109,17,0.1); }
+.tag-fail    { color: #4A0808; border-color: rgba(192,72,40,0.4); background: rgba(192,72,40,0.08); }
+
+/* ── TERRAIN ── */
+.terrain-section {
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: rgba(26,16,8,0.07);
+  border-left: 2px solid;
+  border-radius: 0 2px 2px 0;
+}
+.terrain-label {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 5px;
+  color: var(--ink-soft);
+}
+.terrain-text {
+  font-family: 'EB Garamond', serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.fire-accent   { border-color: var(--fire); }
+.earth-accent  { border-color: var(--earth); }
+.air-accent    { border-color: var(--air); }
+.water-accent  { border-color: var(--water); }
+.shadow-accent { border-color: var(--shadow); }
+
+/* ── EPIC CARD ── */
+.card-epic .card-body {
+  background: linear-gradient(170deg, #E8D4F0 0%, #D8C0E8 30%, #CCAEE0 60%, #DAC8EC 100%);
+}
+.card-epic .card-title { color: #1A0830; }
+.card-epic .card-body::before {
+  background: linear-gradient(90deg, transparent, var(--shadow) 20%, var(--shadow) 80%, transparent);
+}
+.epic-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 28px;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  margin-top: 70px;
+}
+.footer-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  opacity: 0.3;
+  text-transform: uppercase;
+}
+.footer-ornament {
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  body { padding: 40px 14px 60px; }
+  .card-art      { height: 180px; }
+  .card-art-epic { height: 200px; }
+  .card-body { padding: 18px 18px 22px; }
+  .epic-grid { grid-template-columns: 1fr; gap: 0; }
+  .card-title-epic { font-size: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enc-card,
+  .enc-card:hover,
+  .enc-card:hover .card-art img {
+    transition: none;
+    transform: none;
+  }
+}

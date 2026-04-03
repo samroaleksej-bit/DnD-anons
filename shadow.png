@@ -1,0 +1,43 @@
+// Планарные Энкаунтеры — main.js
+
+(function () {
+  'use strict';
+
+  // ── Intersection Observer for card entrance animations ──
+  const cards = document.querySelectorAll('.enc-card');
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry, i) {
+          if (entry.isIntersecting) {
+            // stagger delay based on card index
+            const idx = Array.from(cards).indexOf(entry.target);
+            setTimeout(function () {
+              entry.target.classList.add('visible');
+            }, idx * 100);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    cards.forEach(function (card) {
+      observer.observe(card);
+    });
+  } else {
+    // Fallback for old browsers
+    cards.forEach(function (card) {
+      card.classList.add('visible');
+    });
+  }
+
+  // ── Transition CSS for .visible ──
+  // Inject the transition rule dynamically so the initial state (opacity:0)
+  // is applied before JS runs, avoiding FOUC
+  const style = document.createElement('style');
+  style.textContent = '.enc-card { transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease; } .enc-card.visible { opacity: 1 !important; transform: translateY(0) !important; }';
+  document.head.appendChild(style);
+
+})();
